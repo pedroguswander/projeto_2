@@ -99,11 +99,44 @@
 {% block content %}
     <h1>Estoque de Materiais</h1>
     
-    <form method="post" class="estoque-search-bar">
-        {% csrf_token %}
-        <input type="text" placeholder="Pesquisar por materiais" name="pesquisa_material">
-        <button type="submit" name="pesquisa_material">Pesquisar</button>
+    <form method="get" action="{% url 'estoque' %}" class="estoque-search-bar">
+        <input id="barra-busca" type="text" placeholder="Pesquisar por materiais" name="q" autocomplete="off">
+        <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+        <button type="submit">Pesquisar</button>
     </form>
+        
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = document.getElementById("csrf-token").value;
+
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": csrftoken }
+        });
+
+        $(function () {
+            $("#barra-busca").autocomplete({
+                source: "{% url 'buscar_material' %}",
+                minLength: 2,
+            });
+        });
+    </script>
     
     {% if error_message %}
     <div class="alert alert-danger" role="alert">
@@ -113,32 +146,29 @@
 
     <div class="estoque-full-container">
         <div class="material-list">
-            {% for material in materiais %}
-            <div class="material-item">
-                <!-- Left Section -->
-                <div class="material-left">
-                    <img src="{{ material.imagem.url }}" alt="{{ material.descricao }}">
-                </div>
-
-                <!-- Center Section -->
-                <div class="material-center">
-                    <h3>{{ material }} ({{ material.codigo }})</h3>
-                    <p>{{ material.descricao }}</p>
-                </div>
-
-                <!-- Right Section -->
-                <div class="material-right">
-                    <ul>
-                        <li>Quantidade no estoque: {{ material.quantidade }}</li>
-                        <li>Preço Unitário: R$ {{ material.preco|floatformat:2 }}</li>
-                        <li>Data de Entrada: {{ material.date_added }}</li>
-                        <li>Data de Saída: {{ material.date_exit|default:"-" }}</li>
-                    </ul>
-                </div>
-            </div>
-            {% empty %}
-            <p>Nenhum material encontrado no estoque.</p>
-            {% endfor %}
+            {% if materiais %}
+                {% for material in materiais %}
+                    <div class="material-item">
+                        <div class="material-left">
+                            <img src="{{ material.imagem.url }}" alt="{{ material.descricao }}">
+                        </div>
+                        <div class="material-center">
+                            <h3>{{ material }} ({{ material.codigo }})</h3>
+                            <p>{{ material.descricao }}</p>
+                        </div>
+                        <div class="material-right">
+                            <ul>
+                                <li>Quantidade no estoque: {{ material.quantidade }}</li>
+                                <li>Preço Unitário: R$ {{ material.preco|floatformat:2 }}</li>
+                                <li>Data de Entrada: {{ material.date_added }}</li>
+                                <li>Data de Saída: {{ material.date_exit|default:"-" }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Nenhum material encontrado.</p>
+            {% endif %}
         </div>
     </div>
 

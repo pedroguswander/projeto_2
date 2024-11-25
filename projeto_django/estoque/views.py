@@ -1,10 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from rolepermissions.roles import assign_role
 from .models import Material, Brinquedo, material_de_um_brinquedo, Cliente, Pedido
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 def login_view(request) :
     if request.method == 'POST':
@@ -100,18 +104,29 @@ def brinquedo_view(request, brinquedo_id) :
     context = {'brinquedo': brinquedo}
     return render(request, 'estoque/brinquedo.html', context)
 
-def estoque_view(request) :
-    error_message = ''
+from django.db.models import Q
 
-    if request.method == 'POST' :
-        if request.POST.get('pesquisa_material') == 'pesquisa_material':
-            material = request.POST.get("pesquise por materiais")
-            try:
-                material_filtrado = Material.objects.get(material__iexact = material)
-                return redirect('estoque_pesquisa', material_filtrado)
-            
-            except Material.DoesNotExist:
-                error_message = 'Material não encontrado!'
+def estoque_view(request):
+    error_message = ''
+    query = request.GET.get('q')
+    if query:
+        materiais = Material.objects.filter(
+            Q(material__icontains=query) | Q(descricao__icontains=query)
+        )
+        if not materiais.exists():
+            error_message = 'Nenhum material encontrado para a busca.'
+    else:
+        materiais = Material.objects.all()
+
+    for material in materiais:
+        material.valor = material.quantidade * material.preco
+
+    context = {
+        'materiais': materiais,
+        'error_message': error_message,
+    }
+    return render(request, 'estoque/estoque.html', context)
+
             
     materiais = Material.objects.all()
 
@@ -125,6 +140,16 @@ def estoque_view(request) :
 def estoque_pesquisa_view(request, material_id) :
     context = {'material_filtrado': material_id,}
     return render(request, 'estoque/estoque_pesquisa.html', context)
+
+
+def buscar_material(request):
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':  # AJAX Request
+        query = request.GET.get('term', '')
+        materiais = Material.objects.filter(material__icontains=query)
+        resultados = [{'id': mat.id, 'label': mat.material} for mat in materiais]
+        return JsonResponse(resultados, safe=False)
+
+    return JsonResponse({'error': 'Método inválido'}, status=400)
 
 def estoque_adicionar_view(request) :
     if request.method == 'POST':
