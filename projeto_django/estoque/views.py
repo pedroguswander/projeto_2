@@ -156,8 +156,35 @@ def pedidos_view(request):
     return render(request, 'estoque/pedidos.html', context)
 
 def pedido_view(request, pedido_id):
+    pode_produzir = True
+
     pedido = Pedido.objects.get(id = pedido_id)
     brinquedo = Brinquedo.objects.get(brinquedo = pedido.brinquedo)
     cliente = Cliente.objects.get(nome = pedido.cliente)
-    context = {'pedido': pedido, 'brinquedo': brinquedo, 'cliente': cliente}
+    materiais = material_de_um_brinquedo.objects.filter(brinquedo = pedido.brinquedo)
+    
+    if request.method == 'POST':
+        data = request.POST
+        action = data.get("producao")
+
+        if action == 'ok':
+            pedido.status = 'em andamento'
+            pedido.save()
+            return redirect('pedidos')
+        
+        if action == 'done':
+            pedido.status = 'concluido'
+            pedido.save()
+            return redirect('pedidos')
+   
+    for material in materiais:
+        material_do_estoque = Material.objects.get(material = material)
+        if material.quantidade > material_do_estoque.quantidade:
+            material.faltando = True
+            pode_produzir = False
+
+        else :
+            material.faltando = False
+
+    context = {'pedido': pedido, 'brinquedo': brinquedo, 'cliente': cliente, 'materiais': materiais, 'pode_produzir': pode_produzir}
     return render(request, 'estoque/pedido.html', context) 

@@ -13,5 +13,45 @@
         <p>{{brinquedo}}</p>
         <p>{{brinquedo.descricao}}</p>
         <img src="{{ brinquedo.imagem.url }}" width="40rem" alt="imagem do pedido">
+        {% if pedido.status == "pendente" %}
+                <div class="check-materials-card">
+                {% for material in materiais %}
+                        {% if material.faltando %}
+                                <p><i id="esta_faltando" class="fa-regular fa-circle-xmark"></i> esta_faltando {{material}}</p>
+                        {% else %}
+                                <p><i id="nao_esta_faltando" class="fa-regular fa-check"></i> ok! {{material}}</p>
+                        {% endif %}
+                {% empty %}   
 
+                {% endfor %}
+                </div>
+
+                <div class="check-production-card">
+                {% if pode_produzir %}
+                <form method="post">
+                        {% csrf_token %}
+                        <button class="button-class" name="producao" value="ok">Iniciar produção</button>
+                </form>
+                {% else %}
+                        <p>Não é possível produzir o pedido</p>
+                {% endif %}
+
+                </div>
+        {% elif pedido.status == "em andamento"  %}
+                <div class="check-production-card">
+                <form method="post">
+                        {% csrf_token %}
+                        <button class="button-class" name="producao" value="done">Concluir produção</button>
+                </form>
+                <br>
+                <form method="post">
+                        {% csrf_token %}
+                        <button class="button-class" name="producao" value="cancel">Cancelar produção</button>
+                </form>
+
+                </div>
+
+        {% elif pedido.status == "concluido"  %}
+                <p>Concluído!</p>
+        {% endif %}
 {% endblock %}
