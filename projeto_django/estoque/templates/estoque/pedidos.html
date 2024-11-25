@@ -1,0 +1,160 @@
+{% extends "estoque/base.html" %}
+
+{% block title %}Pedidos{% endblock %}
+
+{% block extra_head %}
+<style>
+/* Estilo geral */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Container de pedidos */
+.pedido-container {
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+/* Estilo de cada item de pedido */
+.pedido-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.pedido-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.pedido-item-left {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.pedido-item-center {
+    flex: 2;
+    display: flex;
+}
+
+.pedido-item-center > div {
+    margin-bottom: 10px;
+}
+
+.pedido-item-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* Títulos e texto */
+.pedido-item h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.pedido-item p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* Botão de detalhes */
+.pedido-item button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 12px 10px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pedido-item button:hover {
+    background-color: #0056b3;
+}
+
+/* Barra de pesquisa e filtro */
+.pesquisa-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.pesquisa-container input {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.pesquisa-container select {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="pesquisa-container">
+    <input type="text" placeholder="Pesquisar">
+    <select>
+        <option value="">Filtro</option>
+        <option value="status">Status</option>
+        <option value="cliente">Cliente</option>
+        <option value="data">Data de entrega</option>
+    </select>
+</div>
+
+<div class="pedido-container">
+    {% for pedido in pedidos %}
+    <div class="pedido-item">
+        <!-- Esquerda: Código do pedido e imagem -->
+        <div class="pedido-item-left">
+            <h3>Código do Pedido: {{ pedido.codigo }}</h3>
+            {% for brinquedo in brinquedos %}
+                {% if brinquedo == pedido.brinquedo %}
+                    <img src="{{ brinquedo.imagem.url }}" alt="Foto do brinquedo">
+                {% endif %}
+            {% empty %}
+                <img src="placeholder.jpg" alt="Imagem não disponível">
+            {% endfor %}
+        </div>
+
+        <!-- Centro: Descrição e botão separados -->
+        <div class="pedido-item-center">
+            <!-- Container da descrição -->
+            <div>
+                <p>{{ pedido.descricao }}</p>
+            </div>
+            <!-- Container do botão -->
+            <div> 
+                <a href="{% url 'pedido' pedido.id %}" class="button-class">Detalhes da entrega</a>
+            </div>
+        </div>
+
+        <!-- Direita: Data de entrega -->
+        <div class="pedido-item-right">
+            <p>Data de Entrega:</p>
+            <p>{{ pedido.data_de_entrega|date:"d/m/Y" }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+{% endblock %}

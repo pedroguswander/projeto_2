@@ -1,31 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brinquedos</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'design.css' %}">
+{% extends "estoque/base.html" %}
 
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'brinquedos' %}">Brinquedos</a>
-            <a href="{% url 'estoque' %}">Materiais</a>
-            <a href="#">Clientes</a>
-        </nav>
-    </header>
-    
-    <h1>Meus brinquedos:</h1>
-    <ul>
-        {% for brinquedo in brinquedos %}
-            <li><a href="{% url 'brinquedo' brinquedo.id %}">{{brinquedo}}</a></li>
-        {% empty %}
+{% block title %}Brinquedos{% endblock %}
 
-        {% endfor %}
-    </ul>
-    <a href="{% url 'brinquedos_cadastro' %}">Registre novo brinquedo</a>
-</body>
-</html>
+{% block extra_head %}
+<style>
+
+.brinquedo-item {
+    border: 2px solid;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Meus brinquedos:</h1>
+<ul class="brinquedos-lista">
+    {% for brinquedo in brinquedos %}
+    <div class="brinquedo-item"> 
+        <div class="brinquedo-card">
+            <img class="brinquedo-imagem" width="100px" height="100px" src="{{ brinquedo.imagem.url }}" alt="Imagem do brinquedo">
+            <p>{{brinquedo}}</p>
+            <p>Codigo: {{brinquedo.codigo}}</p>
+            <p>{{brinquedo.descricao}}</p>
+            <p>Quantidade no estoque: {{brinquedo.quantidade}}</p>
+        </div>
+        <a href="{% url 'brinquedo' brinquedo.id %}">Processo de criação</a>
+    </div>
+    {% empty %}
+    <p>Nenhum brinquedo cadastrado ainda.</p>
+    {% endfor %}
+</ul>
+<a href="{% url 'brinquedos_cadastro' %}" class="botao-registrar">Registrar novo brinquedo</a>
+
+{% endblock %}
+

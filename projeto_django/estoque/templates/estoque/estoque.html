@@ -1,45 +1,146 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estoque</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'design.css' %}">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'brinquedos' %}">Brinquedos</a>
-            <a href="{% url 'estoque' %}">Materiais</a>
-            <a href="#">Clientes</a>
-        </nav>
-    </header>
-    <h1>Nível de estoque:</h1>
+{% extends "estoque/base.html" %}
+
+{% block title %}Estoque{% endblock %}
+
+{% block extra_head %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .estoque-full-container {
+        border: 2px solid #A0A0A0;
+        border-radius: 10px;
+        width: 70%;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+    }
+
+    .estoque-search-bar {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .estoque-search-bar input, 
+    .estoque-search-bar button {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .material-list {
+        max-height: 500px;
+        overflow-y: auto;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #ffffff;
+    }
+
+    .material-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 2px solid rgb(181, 172, 172);
+        border-radius: 10px;
+        background-color: rgb(207, 205, 205);
+    }
+
+    .material-left, .material-center, .material-right {
+        margin: 10px;
+    }
+
+    .material-left img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+    .material-center {
+        flex: 2;
+    }
+
+    .material-center p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    .material-right {
+        text-align: right;
+    }
+
+    .material-right li {
+        list-style: none;
+        margin: 5px 0;
+    }
+
+    .add-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .add-button:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <h1>Estoque de Materiais</h1>
     
-    <form method="post">
-    {% csrf_token %}
-        <input type="text" placeholder="pesquise por materiais" name="pesquise por materiais">
-        <button type="submit" name="pesquisa_material" value="pesquisa_material">Pesquise por materiais:</button>
+    <form method="post" class="estoque-search-bar">
+        {% csrf_token %}
+        <input type="text" placeholder="Pesquisar por materiais" name="pesquisa_material">
+        <button type="submit" name="pesquisa_material">Pesquisar</button>
     </form>
+    
     {% if error_message %}
     <div class="alert alert-danger" role="alert">
         {{ error_message }}
     </div>
     {% endif %}
-    <ul>
-        {% for material in materiais %}
-        <li>{{material}}:</li>
-        <li>Itens encontrados no estoque: {{material.quantidade}}</li>
-        <li>Preço por Item: {{material.preco}} R$</li>
-        <li>Valor total do estoque: {{material.valor}} R$</li>
-        <li>Data de entrada: {{material.date_added}} </li>
-        <br>
-        {% empty %}
 
-        {% endfor %}
-    </ul>
-    <button type="button"><a href="{% url 'estoque_adicionar' %}">Adicionar material</a></button>
-</body>
-</html>
+    <div class="estoque-full-container">
+        <div class="material-list">
+            {% for material in materiais %}
+            <div class="material-item">
+                <!-- Left Section -->
+                <div class="material-left">
+                    <img src="{{ material.imagem.url }}" alt="{{ material.descricao }}">
+                </div>
+
+                <!-- Center Section -->
+                <div class="material-center">
+                    <h3>{{ material }} ({{ material.codigo }})</h3>
+                    <p>{{ material.descricao }}</p>
+                </div>
+
+                <!-- Right Section -->
+                <div class="material-right">
+                    <ul>
+                        <li>Quantidade no estoque: {{ material.quantidade }}</li>
+                        <li>Preço Unitário: R$ {{ material.preco|floatformat:2 }}</li>
+                        <li>Data de Entrada: {{ material.date_added }}</li>
+                        <li>Data de Saída: {{ material.date_exit|default:"-" }}</li>
+                    </ul>
+                </div>
+            </div>
+            {% empty %}
+            <p>Nenhum material encontrado no estoque.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <a href="{% url 'estoque_adicionar' %}" class="add-button">Adicionar Material</a>
+{% endblock %}

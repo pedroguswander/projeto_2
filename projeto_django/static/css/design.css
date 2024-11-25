@@ -1,0 +1,78 @@
+/* Estilo geral */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e3e3e3;
+    padding: 10px 20px;
+}
+
+.navbar-left, .navbar-center, .navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.logo-container {
+    font-size: 24px;
+    color: black;
+}
+
+.navbar-center .nav-link {
+    text-decoration: none;
+    color: black;
+    font-weight: lighter;
+    margin: 0 10px;
+}
+
+.divider {
+    height: 20px;
+    width: 2px;
+    background-color: #999;
+    margin: 0 10px;
+}
+
+.navbar-right .nav-link {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.navbar a:hover {
+    color: #555;
+}
+
+.button-class {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: #ffffff; /* Cor do texto */
+    background-color: #007bff; /* Cor de fundo */
+    border: none;
+    border-radius: 5px; /* Bordas arredondadas */
+    text-decoration: none; /* Remove sublinhado */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button-class:hover {
+    background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+    transform: scale(1.05); /* Pequeno aumento */
+}
+
+.button-class:active {
+    background-color: #003d80; /* Cor de fundo ao clicar */
+    transform: scale(0.95); /* Redução no clique */
+}
+
+.button-class:focus {
+    outline: 2px solid #80bdff; /* Foco visível */
+    outline-offset: 2px;
+}

@@ -1,50 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brinquedo</title>
-    <style>
-        .brinquedos {
-            border: 2px solid gray;
-        }
-        .materiais {
-            border: 2px solid gainsboro;
-        }
-    </style>
-    <link rel="stylesheet" type="text/css" href="{% static 'design.css' %}">
-</head>
-<body>
-    <h1>Brinquedo</h1>
-    <ul>
-        <div class="brinquedo">
-            <li>Brinquedo: {{brinquedo.brinquedo}}</li>
-            <li>Descrição: {{brinquedo.descricao}}</li>
-            <li>Passo a passo: {{brinquedo.passo_a_passo}}</li>
-            <h2>Materiais:</h2>
-            <div class="materiais">
-                {% for mb in materiais %}
-                    <ul>
-                        <li>{{mb.material}} - Quantidade: {{mb.quantidade}}</li>
-                    </ul>
-                {% empty %}
-                    <p>Sem materiais associados a este brinquedo.</p>
-                {% endfor %}
-            </div>
-            {% if not pode_produzir %} 
-                <p>Não é possível produzir o brinquedo</p><p>Custo de produção {{ preco_total }}</p>
-                {% for faltam in faltando %}
-                    <ul>
-                        <li>{{ faltam }}</li>
-                    </ul>
-                {% endfor %}
-            {% else %}
-                <p>Custo de produção {{ preco_total }}</p>
-                <button type="submit" name="registro_brinquedo" value="brinquedo">Verificar produção</button>
-            {% endif %}
-        </div>
-    </ul>
-</body>
+{% extends "estoque/base.html" %}
 
-</html>
+{% block title %}Brinquedo{% endblock %}
+
+{% block content %}
+
+{% block extra_head %}
+<style>
+    details > summary 
+    {
+        margin-left: 50%;
+        padding: 4px;
+        width: max-content;
+        background-color: #eeeeee;
+        border: none;
+        box-shadow: 1px 1px 2px #bbbbbb;
+        cursor: pointer;
+    }
+    details > p 
+    {
+        background-color: #eeeeee;
+        padding: 4px;
+        margin: 0;
+        box-shadow: 1px 1px 2px #bbbbbb;
+    }
+</style>
+{% endblock %}
+
+<details class="receita-card">
+    <summary>Descrição do passo a passo</summary>
+    <p>{{brinquedo.passo_a_passo}}</p>
+</details>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "estoque/base.html" %}
+
+{% block title %}Pedido{% endblock %}
+
+{% block extra_head %}{% endblock %}
+
+{% block content %}
+        <p>{{cliente.nome}}</p>
+        <p>{{cliente.cpf}}</p>
+        <p>{{cliente.contato}}</p>
+        <p>{{cliente.enderco}}</p>
+
+        <p>{{brinquedo}}</p>
+        <p>{{brinquedo.descricao}}</p>
+        <img src="{{ brinquedo.imagem.url }}" width="40rem" alt="imagem do pedido">
+
+{% endblock %}

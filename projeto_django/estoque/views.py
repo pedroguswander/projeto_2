@@ -1,7 +1,10 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth import authenticate, login
-from .models import Material, Brinquedo, material_de_um_brinquedo
+from django.contrib.auth.models import User
+from rolepermissions.roles import assign_role
+from .models import Material, Brinquedo, material_de_um_brinquedo, Cliente, Pedido
 
 def login_view(request) :
     if request.method == 'POST':
@@ -17,9 +20,7 @@ def cadastro_view(request) :
     pass
 
 def home_view(request) :
-    qnt_materias = 0
-    fantoches = 0
-    context = {"qnt_materias" : qnt_materias, "fantoches" : fantoches}
+    context = {}
     return render(request, 'estoque/home.html', context)
 
 def brinquedos_view(request) :
@@ -35,11 +36,13 @@ def brinquedos_cadastro_view(request) :
         brinquedo = request.POST.get('brinquedo')
         descricao = request.POST.get('descricao')
         passo_a_passo = request.POST.get('passo a passo')
+        imagem = request.POST.get('imagem')
 
         b = Brinquedo(
             brinquedo = brinquedo,
             descricao = descricao,
             passo_a_passo = passo_a_passo,
+            imagem = imagem,
         )
         b.save()
 
@@ -59,9 +62,21 @@ def brinquedos_cadastro_view(request) :
     context = {'materiais': materiais}
     return render(request, 'estoque/brinquedos_cadastro.html', context)
 
-def brinquedo_view(request, brinquedo_id) :
-    preco_total = 0
+'''def brinquedo_view(request, brinquedo_id) :
     pode_produzir = True
+
+    if request.method == 'POST':
+
+        if request.POST.get('registro_brinquedo') == 'brinquedo' and pode_produzir:
+            brinquedo = Brinquedo.objects.get(id = brinquedo_id)
+            materiais = material_de_um_brinquedo.objects.filter(brinquedo = brinquedo)
+            for material in materiais :
+                material_do_estoque = Material.objects.get(material = material)
+                material_do_estoque.quantidade -= material.quantidade
+                material_do_estoque.save()
+
+    preco_total = 0
+
     faltando = []
 
     brinquedo = Brinquedo.objects.get(id = brinquedo_id)
@@ -78,6 +93,11 @@ def brinquedo_view(request, brinquedo_id) :
     context = {'brinquedo' : brinquedo, 'materiais' : materiais, 'preco_total' : preco_total,
             'pode_produzir' : pode_produzir, 'faltando' : faltando,}
     
+    return render(request, 'estoque/brinquedo.html', context)'''
+
+def brinquedo_view(request, brinquedo_id) :
+    brinquedo = Brinquedo.objects.get(id = brinquedo_id)
+    context = {'brinquedo': brinquedo}
     return render(request, 'estoque/brinquedo.html', context)
 
 def estoque_view(request) :
@@ -127,3 +147,17 @@ def estoque_adicionar_view(request) :
             
     context = {}
     return render(request, 'estoque/estoque_adicionar.html', context)
+
+def pedidos_view(request):
+    pedidos = Pedido.objects.all()
+    brinquedos = Brinquedo.objects.all()
+    clientes = Cliente.objects.all()
+    context = {'pedidos': pedidos, 'brinquedos': brinquedos, 'clientes': clientes}
+    return render(request, 'estoque/pedidos.html', context)
+
+def pedido_view(request, pedido_id):
+    pedido = Pedido.objects.get(id = pedido_id)
+    brinquedo = Brinquedo.objects.get(brinquedo = pedido.brinquedo)
+    cliente = Cliente.objects.get(nome = pedido.cliente)
+    context = {'pedido': pedido, 'brinquedo': brinquedo, 'cliente': cliente}
+    return render(request, 'estoque/pedido.html', context) 

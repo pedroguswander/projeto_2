@@ -1,25 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página inicial</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'design.css' %}">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'brinquedos' %}">Brinquedos</a>
-            <a href="{% url 'estoque' %}">Materiais</a>
-            <a href="#">Clientes</a>
-        </nav>
-    </header>
-    <img src="https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/001.png" 
-    alt="Imagem de usuário da cliente" width="200" height="200">
+{% extends "estoque/base.html" %}
 
-    <p>Estoque : {{qnt_materias}} itens</p>
-    <p>Fantoches : {{fantoches}}</p>
-</body>
-</html>
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- Conteúdo da página será inserido aqui -->
+{% endblock %}
