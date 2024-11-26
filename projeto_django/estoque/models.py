@@ -59,3 +59,14 @@ class Pedido(models.Model) :
 
     def __str__(self):
         return self.codigo
+    
+class Feedback(models.Model) :
+    titulo = models.CharField(max_length=20)
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='feedback', null=True)
+    #brinquedo = models.ForeignKey(Brinquedo, on_delete=models.CASCADE, related_name='brinquedo_de_um_feedback', null=True)
+    descricao = models.TextField(max_length=500, blank=True, null= True)
+    data_de_escrita = models.DateField(auto_now_add=True)
+    estrelas = models.IntegerField(blank= True, null= True)
+    
+    def __str__(self):
+        return self.titulo

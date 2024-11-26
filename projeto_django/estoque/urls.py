@@ -16,6 +16,8 @@ urlpatterns = [
     path('estoque_adicionar/', estoque_adicionar_view, name='estoque_adicionar'),
     path('pedidos/', pedidos_view, name='pedidos'),
     path('pedidos/<pedido_id>/', pedido_view, name='pedido'),
+    path('feedbacks/<brinquedo_id>/', feedback_view, name='feedbacks'),
+    path('feedback_adicionar', feedback_adicionar_view, name='feedback_adicionar'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

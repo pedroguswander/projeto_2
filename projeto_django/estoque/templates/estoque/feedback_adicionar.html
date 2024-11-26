@@ -1,0 +1,112 @@
+{% extends "estoque/base.html" %}
+
+{% block title %}Adicionar Feedback{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Estilo geral da página */
+    .feedback-form-container {
+        width: 80%;
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
+
+    .feedback-form-container h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    /* Estilo do formulário */
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    form p {
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #555;
+        font-weight: bold;
+    }
+
+    form input[type="text"],
+    form textarea,
+    form select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    form textarea {
+        resize: none;
+    }
+
+    form button[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    form button[type="submit"]:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+
+    form button[type="submit"]:active {
+        background-color: #003d80;
+        transform: scale(0.95);
+    }
+
+    /* Mensagem quando não há pedidos */
+    .empty-option {
+        color: #999;
+        font-style: italic;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="feedback-form-container">
+    <h1>Adicionar Feedback dos Clientes</h1>
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Campo Título -->
+        <p>Título</p>
+        <input type="text" name="titulo" placeholder="Digite o título do feedback" required>
+
+        <!-- Campo Descrição -->
+        <p>Descrição</p>
+        <textarea name="descricao" id="descricao" rows="4" placeholder="Escreva aqui o feedback detalhado..." required></textarea>
+
+        <!-- Campo de seleção de pedido -->
+        <p>Pedido</p>
+        <select name="pedidos" id="pedidos" required>
+            {% for pedido in pedidos %}
+                <option value="{{ pedido.codigo }}">Código: {{ pedido.codigo }}</option>
+            {% empty %}
+                <option value="nada" disabled class="empty-option">Nenhum pedido disponível</option>
+            {% endfor %}
+        </select>
+
+        <!-- Botão de envio -->
+        <button type="submit" name="feedback" value="enviar">Enviar</button>
+    </form>
+</div>
+{% endblock %}

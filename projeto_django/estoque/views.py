@@ -5,7 +5,7 @@ from django.views import View
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from rolepermissions.roles import assign_role
-from .models import Material, Brinquedo, material_de_um_brinquedo, Cliente, Pedido
+from .models import Material, Brinquedo, material_de_um_brinquedo, Cliente, Pedido, Feedback
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
@@ -31,7 +31,6 @@ def brinquedos_view(request) :
     brinquedos = Brinquedo.objects.all()
     context = {'brinquedos' : brinquedos}
     return render(request, 'estoque/brinquedos.html', context)
-
 
 def brinquedos_cadastro_view(request) :
     materiais = Material.objects.all()
@@ -66,42 +65,10 @@ def brinquedos_cadastro_view(request) :
     context = {'materiais': materiais}
     return render(request, 'estoque/brinquedos_cadastro.html', context)
 
-'''def brinquedo_view(request, brinquedo_id) :
-    pode_produzir = True
-
-    if request.method == 'POST':
-
-        if request.POST.get('registro_brinquedo') == 'brinquedo' and pode_produzir:
-            brinquedo = Brinquedo.objects.get(id = brinquedo_id)
-            materiais = material_de_um_brinquedo.objects.filter(brinquedo = brinquedo)
-            for material in materiais :
-                material_do_estoque = Material.objects.get(material = material)
-                material_do_estoque.quantidade -= material.quantidade
-                material_do_estoque.save()
-
-    preco_total = 0
-
-    faltando = []
-
-    brinquedo = Brinquedo.objects.get(id = brinquedo_id)
-    materiais = material_de_um_brinquedo.objects.filter(brinquedo = brinquedo)
-    for material in materiais :
-        material_do_estoque = Material.objects.get(material = material)
-        preco_total += material.quantidade * material_do_estoque.preco
-
-        if material.quantidade > material_do_estoque.quantidade:
-            pode_produzir = False
-            faltando.append(f'{material}: faltam {material.quantidade - material_do_estoque.quantidade} itens, você possui {material_do_estoque.quantidade} item no estoque')
-
-    
-    context = {'brinquedo' : brinquedo, 'materiais' : materiais, 'preco_total' : preco_total,
-            'pode_produzir' : pode_produzir, 'faltando' : faltando,}
-    
-    return render(request, 'estoque/brinquedo.html', context)'''
-
 def brinquedo_view(request, brinquedo_id) :
     brinquedo = Brinquedo.objects.get(id = brinquedo_id)
-    context = {'brinquedo': brinquedo}
+    materiais = material_de_um_brinquedo.objects.filter(brinquedo = brinquedo.id)
+    context = {'brinquedo': brinquedo, 'materiais': materiais}
     return render(request, 'estoque/brinquedo.html', context)
 
 from django.db.models import Q
@@ -127,15 +94,6 @@ def estoque_view(request):
     }
     return render(request, 'estoque/estoque.html', context)
 
-            
-    materiais = Material.objects.all()
-
-    for material in materiais :
-        material.valor = material.quantidade * material.preco
-
-    context = {'materiais' : materiais, 'error_message': error_message}
-
-    return render(request, 'estoque/estoque.html', context)
 
 def estoque_pesquisa_view(request, material_id) :
     context = {'material_filtrado': material_id,}
@@ -193,12 +151,28 @@ def pedido_view(request, pedido_id):
         action = data.get("producao")
 
         if action == 'ok':
+            for material in materiais:
+                material_do_estoque = Material.objects.get(material = material)
+                if material_do_estoque.quantidade >= material.quantidade:
+                    material_do_estoque.quantidade -= material.quantidade
+                    material_do_estoque.save()
+
             pedido.status = 'em andamento'
             pedido.save()
             return redirect('pedidos')
         
         if action == 'done':
             pedido.status = 'concluido'
+            pedido.save()
+            return redirect('pedidos')
+        
+        if action == 'cancel':
+            for material in materiais:
+                material_do_estoque = Material.objects.get(material = material)
+                material_do_estoque.quantidade += material.quantidade
+                material_do_estoque.save()
+
+            pedido.status = 'pendente'
             pedido.save()
             return redirect('pedidos')
    
@@ -213,3 +187,36 @@ def pedido_view(request, pedido_id):
 
     context = {'pedido': pedido, 'brinquedo': brinquedo, 'cliente': cliente, 'materiais': materiais, 'pode_produzir': pode_produzir}
     return render(request, 'estoque/pedido.html', context) 
+
+def feedback_view(request, brinquedo_id):
+    feedbacks = Feedback.objects.all()
+    brinquedo = Brinquedo.objects.get(id = brinquedo_id)
+    pedidos = Pedido.objects.filter(brinquedo = brinquedo)
+
+    context = {'feedbacks': feedbacks ,'pedidos': pedidos, 'brinquedo': brinquedo,}
+    return render(request, 'estoque/feedbacks.html', context)
+
+def feedback_adicionar_view(request):
+    if request.method == 'POST':
+        data = request.POST
+        action = data.get("feedback")
+
+        if action == "enviar":
+            titulo = data.get('titulo')
+            descricao = data.get('descricao')
+            str_pedido = data.get('pedidos')
+
+            pedido = Pedido.objects.get(codigo = str_pedido)
+
+            feedback = Feedback(
+                titulo = titulo,
+                descricao = descricao,
+                pedido = pedido,
+            )
+
+            feedback.save()
+
+    pedidos = Pedido.objects.filter(status = 'concluido')
+    context = {'pedidos': pedidos}
+
+    return render(request, 'estoque/feedback_adicionar.html', context)

@@ -1,34 +1,95 @@
 {% extends "estoque/base.html" %}
 
-{% block title %}Brinquedo{% endblock %}
-
-{% block content %}
+{% block title %}Brinquedo - Passo a Passo{% endblock %}
 
 {% block extra_head %}
 <style>
-    details > summary 
-    {
-        margin-left: 50%;
-        padding: 4px;
-        width: max-content;
-        background-color: #eeeeee;
-        border: none;
-        box-shadow: 1px 1px 2px #bbbbbb;
-        cursor: pointer;
+    /* Estilo para o container principal */
+    .receita-container {
+        margin: 20px auto;
+        padding: 20px;
+        width: 80%;
+        max-width: 800px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
     }
-    details > p 
-    {
+
+    /* Título principal */
+    .receita-container h1 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    /* Estilo do details */
+    details {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilo do summary */
+    details > summary {
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 10px;
         background-color: #eeeeee;
-        padding: 4px;
-        margin: 0;
+        border-radius: 5px;
         box-shadow: 1px 1px 2px #bbbbbb;
+    }
+
+    /* Estilo do conteúdo do details */
+    details > p, .material-item {
+        background-color: #f5f5f5;
+        padding: 8px;
+        margin: 5px 0;
+        border-radius: 5px;
+        box-shadow: 1px 1px 2px #bbbbbb;
+    }
+
+    /* Lista de materiais */
+    .material-lista {
+        margin-top: 20px;
+    }
+
+    .material-item {
+        font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .material-item span {
+        font-weight: bold;
     }
 </style>
 {% endblock %}
 
-<details class="receita-card">
-    <summary>Descrição do passo a passo</summary>
-    <p>{{brinquedo.passo_a_passo}}</p>
-</details>
+{% block content %}
+<div class="receita-container">
+    <h1>Passo a Passo de Produção</h1>
+    <details class="receita-card">
+        <summary>Descrição do Passo a Passo</summary>
+        <p>{{ brinquedo.passo_a_passo }}</p>
+    </details>
 
+    <div class="material-lista">
+        <h2>Materiais Necessários</h2>
+        {% for material in materiais %}
+            <div class="material-item">
+                <span>{{ material }}</span>
+                <span>Quantidade: {{ material.quantidade }}</span>
+            </div>
+        {% empty %}
+            <p>Nenhum material registrado para este brinquedo.</p>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

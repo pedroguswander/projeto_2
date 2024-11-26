@@ -1,0 +1,123 @@
+{% extends "estoque/base.html" %}
+
+{% block title %}Feedbacks{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Container principal */
+    .feedback-container {
+        margin: 20px auto;
+        padding: 20px;
+        width: 80%;
+        max-width: 800px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
+
+    /* Título e imagem */
+    .feedback-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .feedback-header img {
+        border-radius: 8px;
+        margin-right: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .feedback-header h1 {
+        font-size: 24px;
+        color: #333;
+    }
+
+    /* Botão de adicionar feedback */
+    .button-class {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .button-class:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+
+    .button-class:active {
+        background-color: #003d80;
+        transform: scale(0.95);
+    }
+
+    /* Feedback card */
+    .feedback-card {
+        background-color: #ffffff;
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .feedback-card p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #555;
+    }
+
+    /* Mensagens de feedback vazio */
+    .feedback-empty, .pedido-empty {
+        text-align: center;
+        color: #999;
+        margin-top: 20px;
+        font-style: italic;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="feedback-container">
+    <!-- Cabeçalho com imagem do brinquedo -->
+    <div class="feedback-header">
+        <img class="brinquedo-imagem" width="100px" height="100px" src="{{ brinquedo.imagem.url }}" alt="Imagem do brinquedo">
+        <h1>Feedbacks do Brinquedo</h1>
+    </div>
+
+    <!-- Botão de adicionar feedback -->
+    <a href="{% url 'feedback_adicionar' %}" class="button-class">Adicionar Feedback</a>
+
+    <!-- Lista de pedidos e feedbacks -->
+    {% for pedido in pedidos %}
+        {% if pedido.status == 'concluido' %}
+            <div class="feedback-card">
+                <h3>Pedido de {{ pedido.cliente }}</h3>
+
+                {% for feedback in feedbacks %}
+                    {% if feedback.pedido == pedido %}
+                        <p><strong>Feedback:</strong> {{ feedback }}</p>
+                        <p><strong>Comentário:</strong> {{ feedback.descricao }}</p>
+                        <p><strong>Data do Feedback:</strong> {{ feedback.data_de_escrita }}</p>
+                    {% endif %}
+                {% empty %}
+                    <p class="feedback-empty">Não há feedbacks para este pedido.</p>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="pedido-empty">Não há pedidos concluídos.</p>
+        {% endif %}
+    {% empty %}
+        <p class="pedido-empty">Não há pedidos para este brinquedo.</p>
+    {% endfor %}
+</div>
+{% endblock %}
