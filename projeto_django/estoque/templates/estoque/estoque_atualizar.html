@@ -18,6 +18,10 @@
     </form>
 
     {% if mensagem %}
-        <p >{{ mensagem }}</p>
+        {% if erro %}
+            <p>{{ mensagem }}</p>
+        {% else %}
+            <p>{{ mensagem }}</p>
+        {% endif %}
     {% endif %}
 {% endblock %}
