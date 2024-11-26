@@ -16,6 +16,7 @@ urlpatterns = [
     path('estoque_adicionar/', estoque_adicionar_view, name='estoque_adicionar'),
     path('pedidos/', pedidos_view, name='pedidos'),
     path('pedidos/<pedido_id>/', pedido_view, name='pedido'),
+    path('atualizar-estoque/<int:material_id>/', atualizar_estoque_view, name='atualizar_estoque'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
