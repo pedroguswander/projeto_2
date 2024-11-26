@@ -131,6 +131,36 @@ def estoque_adicionar_view(request) :
     context = {}
     return render(request, 'estoque/estoque_adicionar.html', context)
 
+def atualizar_estoque_view(request, material_id):
+    material = get_object_or_404(Material, id=material_id)
+    mensagem = ''
+    erro = False
+
+    if request.method == 'POST':
+        quantidade_atualizada = request.POST.get('quantidade')
+        try:
+            quantidade_atualizada = int(quantidade_atualizada)
+            nova_quantidade = material.quantidade + quantidade_atualizada
+            
+            if nova_quantidade < 0:
+                mensagem = "Erro: A quantidade no estoque não pode ser negativa."
+                erro = True
+            else:
+                material.quantidade = nova_quantidade
+                material.save()
+                mensagem = "Estoque atualizado com sucesso!"
+        except ValueError:
+            mensagem = "Por favor, insira uma quantidade válida."
+            erro = True
+
+    context = {
+        'material': material,
+        'mensagem': mensagem,
+        'erro': erro,
+    }
+    return render(request, 'estoque/estoque_atualizar.html', context)
+
+
 def pedidos_view(request):
     pedidos = Pedido.objects.all()
     brinquedos = Brinquedo.objects.all()
