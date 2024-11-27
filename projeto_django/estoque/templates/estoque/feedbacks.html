@@ -95,13 +95,13 @@
     </div>
 
     <!-- Botão de adicionar feedback -->
-    <a href="{% url 'feedback_adicionar' %}" class="button-class">Adicionar Feedback</a>
 
     <!-- Lista de pedidos e feedbacks -->
     {% for pedido in pedidos %}
         {% if pedido.status == 'concluido' %}
             <div class="feedback-card">
-                <h3>Pedido de {{ pedido.cliente }}</h3>
+                <h3>Cliente: {{ pedido.cliente }} </h3>
+                <h3>Pedido: {{pedido}}</h3>
 
                 {% for feedback in feedbacks %}
                     {% if feedback.pedido == pedido %}

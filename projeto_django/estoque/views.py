@@ -226,7 +226,10 @@ def feedback_view(request, brinquedo_id):
     context = {'feedbacks': feedbacks ,'pedidos': pedidos, 'brinquedo': brinquedo,}
     return render(request, 'estoque/feedbacks.html', context)
 
-def feedback_adicionar_view(request):
+def feedback_adicionar_view(request, pedido_id):
+    pedido = Pedido.objects.get(id = pedido_id)
+    cliente = Cliente.objects.get(nome = pedido.cliente)
+
     if request.method == 'POST':
         data = request.POST
         action = data.get("feedback")
@@ -234,10 +237,7 @@ def feedback_adicionar_view(request):
         if action == "enviar":
             titulo = data.get('titulo')
             descricao = data.get('descricao')
-            str_pedido = data.get('pedidos')
-
-            pedido = Pedido.objects.get(codigo = str_pedido)
-
+            #obj_pedido = Feedback.objects.get(pedido = pedido)
             feedback = Feedback(
                 titulo = titulo,
                 descricao = descricao,
@@ -246,7 +246,6 @@ def feedback_adicionar_view(request):
 
             feedback.save()
 
-    pedidos = Pedido.objects.filter(status = 'concluido')
-    context = {'pedidos': pedidos}
+    context = {'pedido': pedido, 'cliente': cliente}
 
     return render(request, 'estoque/feedback_adicionar.html', context)

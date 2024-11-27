@@ -181,16 +181,15 @@
 <div class="check-production-card">
     <form method="post">
         {% csrf_token %}
-        <button class="button-class" name="producao" value="done">Concluir produção</button>
+        <button type="submit" class="btn btn-success" name="producao" value="done">Concluir produção</button>
     </form>
     <form method="post">
         {% csrf_token %}
-        <button class="button-class cancel-button" name="producao" value="cancel">
-            <span style="color: aliceblue;">&#10060;</span> Cancelar produção
-        </button>
+        <button id="button-cancel" type="submit" class="btn btn-danger" name="producao" value="cancel">Cancelar produção</button>
     </form>
 </div>
 {% elif pedido.status == "concluido" %}
-<p>Concluído!</p>
+<p>Pedido Concluído!</p>
+<a href="{% url 'feedback_adicionar' pedido.id %}" class="button-class">Adicionar Feedback do cliente</a>
 {% endif %}
 {% endblock %}

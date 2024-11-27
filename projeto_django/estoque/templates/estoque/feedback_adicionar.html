@@ -83,7 +83,7 @@
 
 {% block content %}
 <div class="feedback-form-container">
-    <h1>Adicionar Feedback dos Clientes</h1>
+    <h1>Feedback do Cliente</h1>
     <form method="post">
         {% csrf_token %}
         
@@ -96,15 +96,8 @@
         <textarea name="descricao" id="descricao" rows="4" placeholder="Escreva aqui o feedback detalhado..." required></textarea>
 
         <!-- Campo de seleção de pedido -->
-        <p>Pedido</p>
-        <select name="pedidos" id="pedidos" required>
-            {% for pedido in pedidos %}
-                <option value="{{ pedido.codigo }}">Código: {{ pedido.codigo }}</option>
-            {% empty %}
-                <option value="nada" disabled class="empty-option">Nenhum pedido disponível</option>
-            {% endfor %}
-        </select>
-
+        <p>Pedido: {{pedido}}</p>
+        <p>Cliente: {{cliente}}</p>
         <!-- Botão de envio -->
         <button type="submit" name="feedback" value="enviar">Enviar</button>
     </form>

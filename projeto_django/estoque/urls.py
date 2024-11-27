@@ -17,7 +17,7 @@ urlpatterns = [
     path('pedidos/', pedidos_view, name='pedidos'),
     path('pedidos/<pedido_id>/', pedido_view, name='pedido'),
     path('feedbacks/<brinquedo_id>/', feedback_view, name='feedbacks'),
-    path('feedback_adicionar', feedback_adicionar_view, name='feedback_adicionar'),
+    path('feedback_adicionar/<pedido_id>/', feedback_adicionar_view, name='feedback_adicionar'),
     path('atualizar-estoque/<int:material_id>/', atualizar_estoque_view, name='atualizar_estoque'),
 ]
 
