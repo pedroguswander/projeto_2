@@ -19,9 +19,9 @@
 
     {% if mensagem %}
         {% if erro %}
-            <p>{{ mensagem }}</p>
+            <p style="color: red;">{{ mensagem }}</p>
         {% else %}
-            <p>{{ mensagem }}</p>
+            <p style="color: green;">{{ mensagem }}</p>
         {% endif %}
     {% endif %}
 {% endblock %}
