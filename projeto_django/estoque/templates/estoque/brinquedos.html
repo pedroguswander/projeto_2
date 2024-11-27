@@ -50,7 +50,13 @@ h1 {
 
 .brinquedo-header {
     display: flex;
-    align-items: start;
+    margin: 0%;
+}
+
+.brinquedo-header p {
+    display: flex;
+    padding-right: 5px;
+    margin: 0%;
 }
 
 .brinquedo-imagem {
@@ -126,13 +132,14 @@ ul.brinquedos-lista {
     
     {% for brinquedo in brinquedos %}
     
-    <div class="brinquedo-item"> 
+    <div class="brinquedo-item">
+        <div class="brinquedo-header">
+            <p>{{brinquedo}}</p>
+            <p>/{{brinquedo.codigo}}</p>
+        </div>
         <div class="brinquedo-card">
             <img class="brinquedo-imagem" width="100px" height="100px" src="{{ brinquedo.imagem.url }}" alt="Imagem do brinquedo">
-            <div class="brinquedo-header">
-            <p>{{brinquedo}}</p>
-            <p>Codigo: {{brinquedo.codigo}}</p>
-            </div>
+
             <p>{{brinquedo.descricao}}</p>
             <p>Quantidade no estoque: {{brinquedo.quantidade}}</p>
         </div>

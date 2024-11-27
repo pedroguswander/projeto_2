@@ -19,7 +19,6 @@
 
     .estoque-search-bar {
         display: flex;
-        justify-content: space-between;
         margin-bottom: 20px;
     }
 
@@ -102,7 +101,7 @@
     <form method="get" action="{% url 'estoque' %}" class="estoque-search-bar">
         <input id="barra-busca" type="text" placeholder="Pesquisar por materiais" name="q" autocomplete="off">
         <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
-        <button type="submit">Pesquisar</button>
+        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
         
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

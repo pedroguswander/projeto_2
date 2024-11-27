@@ -151,6 +151,8 @@ body {
         <div class="pedido-item-right">
             <p>Data de Entrega:</p>
             <p>{{ pedido.data_de_entrega|date:"d/m/Y" }}</p>
+            <p>Data de Solicitação:</p>
+            <p>{{ pedido.data_de_solicitacao|date:"d/m/Y" }}</p>
         </div>
     </div>
     {% endfor %}

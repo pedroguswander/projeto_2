@@ -2,56 +2,195 @@
 
 {% block title %}Pedido{% endblock %}
 
-{% block extra_head %}{% endblock %}
+{% block extra_head %}
+<style>
+    /* Layout Geral */
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    h3, h4 {
+        color: #0056b3;
+    }
+
+    p {
+        margin: 5px 0;
+    }
+
+    /* Informações do Cliente */
+    .cliente-info, .produto-info {
+        margin-bottom: 20px;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .cliente-info h3, .produto-info h3 {
+        margin-bottom: 15px;
+    }
+
+    /* Informações do Produto */
+    .produto-info img {
+        display: block;
+        margin-top: 10px;
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    /* Materiais */
+    .check-materials-card {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .check-materials-card p {
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+    }
+
+    .check-materials-card p span {
+        margin-right: 10px;
+    }
+
+    /* Produção */
+    .check-production-card {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Botões */
+    .button-class {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .button-class:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .button-class:active {
+        transform: translateY(0);
+        box-shadow: none;
+    }
+
+    .button-class {
+        background-color: #007bff;
+        color: #ffffff;
+    }
+
+    .cancel-button {
+        background-color: #dc3545;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cancel-button:hover {
+        background-color: #c82333;
+    }
+
+    .cancel-button span {
+        margin-right: 5px;
+        font-size: 18px;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .cliente-info, .produto-info, .check-materials-card, .check-production-card {
+            padding: 10px;
+        }
+
+        .button-class {
+            font-size: 14px;
+            padding: 8px 15px;
+        }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-        <p>{{cliente.nome}}</p>
-        <p>{{cliente.cpf}}</p>
-        <p>{{cliente.contato}}</p>
-        <p>{{cliente.enderco}}</p>
+<div class="cliente-info">
+    <h3>Informações do Cliente</h3>
+    <p><strong>Nome:</strong> {{ cliente.nome }}</p>
+    <p><strong>CPF:</strong> {{ cliente.cpf }}</p>
+    <p><strong>Contato:</strong> {{ cliente.contato }}</p>
+    <p><strong>Endereço:</strong> {{ cliente.endereco }}</p>
+</div>
 
-        <p>{{brinquedo}}</p>
-        <p>{{brinquedo.descricao}}</p>
-        <img src="{{ brinquedo.imagem.url }}" width="40rem" alt="imagem do pedido">
-        {% if pedido.status == "pendente" %}
-                <div class="check-materials-card">
-                {% for material in materiais %}
-                        {% if material.faltando %}
-                                <p><i id="esta_faltando" class="fa-regular fa-circle-xmark"></i> esta_faltando {{material}}</p>
-                        {% else %}
-                                <p><i id="nao_esta_faltando" class="fa-regular fa-check"></i> ok! {{material}}</p>
-                        {% endif %}
-                {% empty %}   
+<div class="produto-info">
+    <h3>Detalhes do Pedido</h3>
+    <p><strong>Produto:</strong> {{ brinquedo }}</p>
+    <p><strong>Código:</strong> {{ brinquedo.codigo }}</p>
+    <p><strong>Descrição:</strong> {{ brinquedo.descricao }}</p>
+    <img src="{{ brinquedo.imagem.url }}" width="80rem" alt="Imagem do pedido">
+</div>
 
-                {% endfor %}
-                </div>
-
-                <div class="check-production-card">
-                {% if pode_produzir %}
-                <form method="post">
-                        {% csrf_token %}
-                        <button class="button-class" name="producao" value="ok">Iniciar produção</button>
-                </form>
-                {% else %}
-                        <p>Não é possível produzir o pedido</p>
-                {% endif %}
-
-                </div>
-        {% elif pedido.status == "em andamento"  %}
-                <div class="check-production-card">
-                <form method="post">
-                        {% csrf_token %}
-                        <button class="button-class" name="producao" value="done">Concluir produção</button>
-                </form>
-                <br>
-                <form method="post">
-                        {% csrf_token %}
-                        <button class="button-class" name="producao" value="cancel">Cancelar produção</button>
-                </form>
-
-                </div>
-
-        {% elif pedido.status == "concluido"  %}
-                <p>Concluído!</p>
+{% if pedido.status == "pendente" %}
+<div class="check-materials-card">
+    <h4>Materiais:</h4>
+    {% for material in materiais %}
+        {% if material.faltando %}
+        <p><span style="font-size: 15px;">&#10060;</span> {{ material }}</p>
+        {% else %}
+        <p><span style="font-size: 15px;">&#9989;</span> {{ material }}</p>
         {% endif %}
+    {% empty %}
+        <p>Sem materiais cadastrados.</p>
+    {% endfor %}
+</div>
+
+<div class="check-production-card">
+    {% if pode_produzir %}
+    <form method="post">
+        {% csrf_token %}
+        <button class="button-class" name="producao" value="ok">Iniciar produção</button>
+    </form>
+    {% else %}
+    <p>Não é possível produzir o pedido.</p>
+    {% endif %}
+</div>
+{% elif pedido.status == "em andamento" %}
+<div class="check-production-card">
+    <form method="post">
+        {% csrf_token %}
+        <button class="button-class" name="producao" value="done">Concluir produção</button>
+    </form>
+    <form method="post">
+        {% csrf_token %}
+        <button class="button-class cancel-button" name="producao" value="cancel">
+            <span style="color: aliceblue;">&#10060;</span> Cancelar produção
+        </button>
+    </form>
+</div>
+{% elif pedido.status == "concluido" %}
+<p>Concluído!</p>
+{% endif %}
 {% endblock %}
