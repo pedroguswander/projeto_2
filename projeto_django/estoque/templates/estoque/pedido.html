@@ -147,10 +147,12 @@
 
 <div class="produto-info">
     <h3>Detalhes do Pedido</h3>
+    <img src="{{ brinquedo.imagem.url }}" width="80rem" alt="Imagem do pedido">
     <p><strong>Produto:</strong> {{ brinquedo }}</p>
     <p><strong>Código:</strong> {{ brinquedo.codigo }}</p>
     <p><strong>Descrição:</strong> {{ brinquedo.descricao }}</p>
-    <img src="{{ brinquedo.imagem.url }}" width="80rem" alt="Imagem do pedido">
+    
+    <p><strong>Status:</strong> {{pedido.status}}</p>
 </div>
 
 {% if pedido.status == "pendente" %}

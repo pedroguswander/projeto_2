@@ -1,0 +1,56 @@
+{% extends "estoque/base.html" %}
+
+{% block title %}Registro de transações do material{% endblock %}
+
+{% block extra_head %}
+<style>
+h2 {
+    text-align: center;
+    font-size: 24px;
+    margin: 20px 0;
+    color: #333;
+}
+
+.registro-lista {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.registro-item {
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e8e8e8;
+    margin-bottom: 15px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+<h2>Registro de transações: {{material}}</h2>
+    <div class="registro-lista">
+        {% for registro in registros %}
+        <div class="registro-item">
+            <p>{{registro}}</p>
+            <p>Saíram <strong>{{registro.quantidade}} itens</strong> do estoque de <strong>{{material}}</strong></p>
+            <p>Data de saída: {{registro.data_de_saida}}</p>
+            <p>Causa:</p>
+            {% if registro.brinquedo and registro.pedido %}
+                <p>Produção do brinquedo: <strong>{{registro.brinquedo}}</strong></p>
+                <p>Solicitado pelo pedido: <strong>{{registro.pedido}}</strong></p>
+            {% endif %}
+        </div>
+        {% empty %}
+            <p>não houve transações nesse estoque</p>
+        {% endfor %}
+        
+    </div>
+{% endblock %}

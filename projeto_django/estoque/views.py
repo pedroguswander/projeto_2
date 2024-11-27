@@ -5,10 +5,11 @@ from django.views import View
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from rolepermissions.roles import assign_role
-from .models import Material, Brinquedo, material_de_um_brinquedo, Cliente, Pedido, Feedback
+from .models import Material, Brinquedo, material_de_um_brinquedo, Cliente, Pedido, Feedback, Registro_de_Transacoes
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
+
 
 def login_view(request) :
     if request.method == 'POST':
@@ -187,6 +188,18 @@ def pedido_view(request, pedido_id):
                     material_do_estoque.quantidade -= material.quantidade
                     material_do_estoque.save()
 
+                    material_registrado = Material.objects.get(material = material_do_estoque)
+
+                    registro = Registro_de_Transacoes(
+                        registro = 'REGISTRO' + str(material_registrado.id),
+                        pedido = pedido,
+                        brinquedo = brinquedo,
+                        material = material_registrado,
+                        quantidade = material.quantidade,
+                    )
+
+                    registro.save()
+
             pedido.status = 'em andamento'
             pedido.save()
             return redirect('pedidos')
@@ -249,3 +262,9 @@ def feedback_adicionar_view(request, pedido_id):
     context = {'pedido': pedido, 'cliente': cliente}
 
     return render(request, 'estoque/feedback_adicionar.html', context)
+
+def registro_estoque_view(request, material_id):
+    registros = Registro_de_Transacoes.objects.filter(material = material_id)
+    material = Material.objects.get(id = material_id)
+    context = {'registros': registros, 'material': material}
+    return render(request, 'estoque/estoque_registro.html', context)

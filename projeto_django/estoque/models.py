@@ -71,3 +71,15 @@ class Feedback(models.Model) :
     
     def __str__(self):
         return self.titulo
+    
+class Registro_de_Transacoes(models.Model):
+    registro =  models.CharField(max_length = 12, blank= True, null= True)
+    material = models.ForeignKey(Material, on_delete=models.CASCADE, related_name='material_saida_chegada', null=True)
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='pedido_saida_chegada', null=True)
+    brinquedo = models.ForeignKey(Brinquedo, on_delete=models.CASCADE, related_name='brinquedo_saida_chegada', null=True, blank= True)
+    quantidade = models.IntegerField()
+    data_de_saida = models.DateField(auto_now_add=True)
+    razao = models.TextField(max_length= 200, null= True, blank= True)
+
+    def __str__(self):
+        return self.registro
