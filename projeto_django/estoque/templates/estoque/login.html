@@ -83,9 +83,10 @@
 </head>
 <body>
     <div class="container">
-        <a href="{% url 'niveis' %}">Administrador</a>
+        <a href="{% url 'niveis' %}">Administrador(a)</a>
         <h2>Login</h2>
         <form method="post">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="username">Nome de usuário:</label>
                 <input type="text" id="username" name="username" required>
@@ -96,9 +97,6 @@
             </div>
             <button type="submit">Entrar</button>
         </form>
-        <div class="signup-link">
-            <p>Se ainda não é usuário, <a href="register.html">cadastre-se</a></p>
-        </div>
     </div>
 </body>
 </html>

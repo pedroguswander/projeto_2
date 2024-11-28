@@ -46,9 +46,8 @@
             background-color: #0056b3;
         }
         .back-button {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
+            width: max-content;
+            align-self: center;
             background-color: #6c757d;
         }
         .back-button:hover {
@@ -59,11 +58,20 @@
 <body>
     <div class="container">
         <h2>Níveis de Acesso</h2>
+        <form method="post">
+        {% csrf_token %}
         <div class="button-group">
-            <button onclick="alert('Administrador selecionado')">Administrador(a)</button>
-            <button onclick="alert('Artesão selecionado')">Artesão</button>
-        </div> 
-        <button class="back-button" onclick="window.location.href='login.html'">Voltar</button>
+                <button type="submit" name="nivel" value="adm" onclick="alert('Administrador selecionado')">Administrador(a)</button>
+                <button type="submit" name="nivel" value="artesa" onclick="alert('Artesão selecionado')">Artesã</button>
+            </form>
+            <script>
+                function newDoc() {
+                  window.location.assign("{% url 'login' %}")
+                }
+            </script>
+            <button class="back-button" onclick="newDoc()">Voltar</button>
+        </div>
+        </form>
     </div>
 </body>
 </html>

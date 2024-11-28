@@ -19,12 +19,25 @@ def login_view(request) :
         if usuario is not None:
             login(request, usuario)
             return redirect('home')
-    return render(request, 'estoque/login.html')
+        
+
+    context = {}
+    
+    return render(request, 'estoque/login.html', context)
 
 def cadastro_view(request) :
     pass
 
 def home_view(request) :
+    try:
+        User.objects.get(username = 'danielle') and User.objects.get(username = 'artesa1')
+    
+    except:
+        usuario1 = User.objects.create_user(username= 'danielle', password= "123")
+        usuario2 = User.objects.create_user(username= 'artesa1', password= "123")
+        usuario1.save()
+        usuario2.save()
+
     context = {}
     return render(request, 'estoque/home.html', context)
 
@@ -270,4 +283,14 @@ def registro_estoque_view(request, material_id):
     return render(request, 'estoque/estoque_registro.html', context)
 
 def niveis_view(request):
-    return render(request, 'niveis.html')
+    if request.method == 'POST':
+        data = request.POST
+        action = data.get("nivel")
+
+        if action == 'adm': #assign roles
+            return redirect('login')
+
+        #if action == 'artesa':
+            return redirect('login')
+
+    return render(request, 'estoque/niveis.html')
