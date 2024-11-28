@@ -9,11 +9,15 @@
         {% csrf_token %}
         <p>Material:</p>
         <input type="text" name="material" required>
+        <p>Codigo:</p>
+        <input type="text" name="codigo" required>        
         <p>Quantidade:</p>
         <input type="number" min="0" name="quantidade" required>
-        <p>Preço:</p>
+        <p>Preço por item:</p>
         <input type="number" step="0.01" min="0" name="preco" required>
-        <input type="datetime-local" name="date_added" required>
+        <p>Descrição:</p>
+        <textarea name="descricao" style="width: 400px;" id="descricao" rows="8"></textarea>
+
         <button type="submit" name="registrar_material" value="registrar_material">adicionar</button>
     </form>
 </body>

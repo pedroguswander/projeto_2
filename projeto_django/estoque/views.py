@@ -114,15 +114,17 @@ def estoque_adicionar_view(request) :
     if request.method == 'POST':
         if request.POST.get("registrar_material") == "registrar_material":
                 material = request.POST.get('material')
+                codigo = request.POST.get('codigo')
+                descricao = request.POST.get('descricao')
                 quantidade = request.POST.get('quantidade')
                 preco = request.POST.get('preco')
-                date_added = request.POST.get('date_added')
 
                 m = Material(
                     material = material,
+                    codigo = codigo,
+                    descricao = descricao,
                     quantidade = quantidade,
                     preco = preco,
-                    date_added = date_added,
                 )
 
                 m.save()

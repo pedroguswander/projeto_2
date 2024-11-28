@@ -2,6 +2,40 @@
 
 {% block title %}Home{% endblock %}
 
+{% block extra_head %}
+<style>
+
+.container-md {
+    margin-top: 50px;
+    border: 2px solid #A0A0A0;
+    max-width: 360px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around
+}
+
+.container-md a {
+    margin: 10px;
+    align-self: center;
+}
+
+h3 {
+    margin-left: 34.7%;
+}
+
+</style>
+
+{% endblock %}
+
 {% block content %}
-<!-- Conteúdo da página será inserido aqui -->
+<h1>Bem vindo ao Instoky!</h1>
+<h3 style="width: 50%;">Funcionalidades de gestão do sistema:</h3>
+<div class="container-md">
+    <a href="{% url 'estoque_adicionar' %}" class="btn btn-primary">Adicionar Material</a>
+    <a href="{% url 'estoque_adicionar' %}" class="btn btn-primary">Adicionar Brinquedo</a>
+    <a href="{% url 'estoque_adicionar' %}" class="btn btn-primary">Adicionar Pedido</a>
+    <a href="{% url 'estoque_adicionar' %}" class="btn btn-primary">Adicionar Cliente</a>
+</div>
 {% endblock %}

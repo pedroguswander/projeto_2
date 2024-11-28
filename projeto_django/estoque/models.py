@@ -25,7 +25,7 @@ class Material(models.Model) :
     descricao = models.TextField(max_length= 100, blank= True)
     quantidade = models.IntegerField()
     preco = models.FloatField()
-    date_added = models.DateTimeField(null=True)
+    date_added = models.DateTimeField(null=True, auto_now_add= True)
     date_exit = models.DateTimeField(null=True, blank= True)
     imagem = models.ImageField(blank= True, default='logo_do_instoky.png')
 
