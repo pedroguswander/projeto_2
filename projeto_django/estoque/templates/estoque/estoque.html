@@ -92,6 +92,13 @@
     .add-button:hover {
         background-color: #0056b3;
     }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
 </style>
 {% endblock %}
 
@@ -160,7 +167,6 @@
                             <li>Quantidade no estoque: {{ material.quantidade }}</li>
                             <li>Preço Unitário: R$ {{ material.preco|floatformat:2 }}</li>
                             <li>Data de Entrada: {{ material.date_added }}</li>
-                            <li>Data de Saída: {{ material.date_exit|default:"-" }}</li>
                             <li><a style="color: green;" href="{% url 'estoque_registro' material.id %}">Ver registro de transações</a></li>
                         </ul>
                         <a href="{% url 'atualizar_estoque' material.id %}" class="add-button">Atualizar Estoque</a>

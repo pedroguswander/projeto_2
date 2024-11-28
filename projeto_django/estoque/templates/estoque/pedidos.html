@@ -105,11 +105,18 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+.pedido-container h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="pesquisa-container">
+<!--<div class="pesquisa-container">
     <input type="text" placeholder="Pesquisar">
     <select>
         <option value="">Filtro</option>
@@ -117,9 +124,10 @@ body {
         <option value="cliente">Cliente</option>
         <option value="data">Data de entrega</option>
     </select>
-</div>
+</div>-->
 
 <div class="pedido-container">
+    <h1>Meus pedidos:</h1>
     {% for pedido in pedidos %}
     <div class="pedido-item">
         <!-- Esquerda: Código do pedido e imagem -->
