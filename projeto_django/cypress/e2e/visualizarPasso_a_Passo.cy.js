@@ -1,4 +1,4 @@
-describe('Eu como usuário, gostaria de atualizar o nível de estoque dos meus materiais', () => {
+describe('Eu como usuário, gostaria de visualizar o passo a passo para produzir um brinquedo', () => {
 
     const isWindows = Cypress.platform === 'win32'; // Detecta o sistema operacional
     const copyCommand = isWindows 
