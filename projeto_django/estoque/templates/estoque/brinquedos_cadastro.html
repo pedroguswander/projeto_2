@@ -9,12 +9,15 @@
         {% csrf_token %}
         <p>Brinquedo:</p>
         <input type="text" name="brinquedo" >
+        <p>Codigo:</p>
+        <input type="text" name="codigo" required>   
+        <p>Quantidade:</p>
+        <input type="number" min="0" name="quantidade" required>
         <p>Descricao:</p>
-        <textarea name="descricao" id="descricao" rows="4" ></textarea>
+        <textarea name="descricao" style="width: 400px;" id="descricao" rows="8"></textarea>
         <p>Passo a passo:</p>
-        <textarea name="passo a passo" id="passo a passo" rows="16" ></textarea>
-        <p>Url da imagem:</p>
-        <input type="url" name="imagem">
+        <textarea name="passo a passo" style="width: 400px;" id="passo a passo" rows="8" ></textarea>
+
         <p> Escolha os materiais:</p>
         <ul>
             {% for material in materiais %}

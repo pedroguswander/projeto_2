@@ -51,15 +51,17 @@ def brinquedos_cadastro_view(request) :
 
     if request.method == 'POST':
         brinquedo = request.POST.get('brinquedo')
+        codigo = request.POST.get('codigo')
+        quantidade = request.POST.get('quantidade')
         descricao = request.POST.get('descricao')
         passo_a_passo = request.POST.get('passo a passo')
-        imagem = request.POST.get('imagem')
 
         b = Brinquedo(
             brinquedo = brinquedo,
+            codigo = codigo,
+            quantidade = quantidade,
             descricao = descricao,
             passo_a_passo = passo_a_passo,
-            imagem = imagem,
         )
         b.save()
 
