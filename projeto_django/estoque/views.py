@@ -298,3 +298,33 @@ def niveis_view(request):
             return redirect('login')
 
     return render(request, 'estoque/niveis.html')
+
+def pedido_adicionar_view(request):
+    clientes = Cliente.objects.all()
+    brinquedos = Brinquedo.objects.all()
+
+    if request.method == 'POST':
+
+        str_brinquedo = request.POST.get('brinquedo')
+        codigo = request.POST.get('codigo')
+        str_cliente = request.POST.get('cliente')
+        descricao = request.POST.get('descricao')
+        data_de_solicitacao = request.POST.get('data_de_solicitacao')
+        data_de_entrega = request.POST.get('data_de_entrega')
+
+        brinquedo = Brinquedo.objects.get(brinquedo = str_brinquedo)
+        cliente = Cliente.objects.get(nome = str_cliente)
+
+        pedido = Pedido(
+            brinquedo = brinquedo,
+            codigo = codigo,
+            cliente = cliente,
+            descricao = descricao,
+            data_de_solicitacao = data_de_solicitacao,
+            data_de_entrega = data_de_entrega,
+        )
+
+        pedido.save()
+
+    context = {'clientes': clientes, 'brinquedos': brinquedos}
+    return render(request, 'estoque/pedidos_adicionar.html', context)

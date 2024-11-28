@@ -54,7 +54,7 @@ class Pedido(models.Model) :
     brinquedo = models.ForeignKey(Brinquedo, on_delete=models.CASCADE, related_name='brinquedo_de_um_pedido', null=True)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name = 'cliente', null= True)
     descricao = models.TextField(max_length= 200, blank= True)
-    status = models.CharField(max_length=20,  choices= STATUS_CHOICES , default= 'Pendente')
+    status = models.CharField(max_length=20,  choices= STATUS_CHOICES , default= 'pendente')
     data_de_solicitacao = models.DateField(null= True, blank= True)
     data_de_entrega = models.DateField(null= True, blank= True)
 
