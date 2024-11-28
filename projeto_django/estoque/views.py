@@ -328,3 +328,23 @@ def pedido_adicionar_view(request):
 
     context = {'clientes': clientes, 'brinquedos': brinquedos}
     return render(request, 'estoque/pedidos_adicionar.html', context)
+
+def cliente_adicionar_view(request):
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        cpf = request.POST.get('cpf')
+        contato = request.POST.get('contato')
+        endereco = request.POST.get('endereco')
+
+        cliente = Cliente(
+            nome = nome,
+            cpf = cpf,
+            contato = contato,
+            endereco = endereco,
+        )
+
+        cliente.save()
+
+    context = {}
+    return render(request, 'estoque/cliente_adicionar.html', context)
+

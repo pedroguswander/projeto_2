@@ -22,6 +22,7 @@ urlpatterns = [
     path('feedback_adicionar/<pedido_id>/', feedback_adicionar_view, name='feedback_adicionar'),
     path('atualizar-estoque/<int:material_id>/', atualizar_estoque_view, name='atualizar_estoque'),
     path('registros-estoque/<int:material_id>/', registro_estoque_view, name='estoque_registro'),
+    path('cliente_adicionar', cliente_adicionar_view, name='cliente_adicionar'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

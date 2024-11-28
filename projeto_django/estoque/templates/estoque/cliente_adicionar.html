@@ -1,0 +1,22 @@
+{% extends "estoque/base.html" %}
+
+{% block title %}Adicionar novo material{% endblock %}
+
+{% block content %}
+
+<h2>Adicionar Cliente</h2>
+<form method="post">
+    {% csrf_token %}
+    <p>Nome:</p>
+    <input type="text" name="nome" required>
+    <p>CPF:</p>
+    <input type="text" name="cpf" required>        
+    <p>Contato:</p>
+    <input type="text" name="contato" required>
+    <p>Endereço:</p>
+    <input type="text" name="endereco" required> 
+
+    <button type="submit" name="registrar_material" value="registrar_material">adicionar cliente</button>
+</form>
+
+{% endblock %}
