@@ -5,9 +5,13 @@ describe('Eu como usuário, gostaria de atualizar o nível de estoque dos meus m
         ? 'copy fixtures\\original_db.sqlite3 db.sqlite3' // Para Windows
         : 'cp fixtures/original_db.sqlite3 db.sqlite3';   // Para Linux/Mac
 
+    const copyCommand2 = isWindows 
+        ? 'copy db.sqlite3 fixtures\\original_db.sqlite3' // Para Windows
+        : 'cp db.sqlite3 fixtures/original_db.sqlite3';   // Para Linux/Mac
+
     before(() => {
         // Copia o banco de dados original para db.sqlite3
-        cy.exec(copyCommand, { failOnNonZeroExit: false })
+        cy.exec(copyCommand2, { failOnNonZeroExit: false })
             .then(result => {
                 cy.log('Banco de dados restaurado a partir do fixture:', result.stdout || result.stderr);
                 expect(result.code).to.eq(0, 'Falha ao restaurar o banco de dados do fixture');
