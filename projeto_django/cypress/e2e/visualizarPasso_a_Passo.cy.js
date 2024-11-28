@@ -25,38 +25,19 @@ describe('Eu como usuário, gostaria de atualizar o nível de estoque dos meus m
             .then(result => cy.log('Execução do comando migrate:', result.stdout || result.stderr));
     });
 
-    it('Exibe mensagem de confirmação após atualizar estoque', () => {
-        // Acessar a página inicial e navegar até o estoque
+    it('Exibe a descrição do passo a passo ao clicar no botão', () => {
+        // Acessar a página inicial e navegar até o processo de criação de um brinquedo
         cy.visit('/');
-        cy.get('[href="/estoque"]').click();
-
-        // Atualizar o estoque e verificar mensagem de confirmação
-        cy.get(':nth-child(1) > .material-right > .add-button').click();
-        cy.get('[type="number"]').type(5); // Adiciona 5 unidades
-        cy.get('button').click(); // Confirma
-        cy.contains('Estoque atualizado com sucesso!').should('be.visible'); // Verifica a mensagem
+        cy.get('[href="/brinquedos"]').click();
+    
+        // Selecionar um brinquedo e acessar o processo de criação
+        cy.get(':nth-child(1) > .button-class').contains('Processo de criação').click();
+    
+        // Verificar se a string de descrição está visível ao clicar no botão de "Descrição do Passo a Passo"
+        cy.get('summary').contains('Descrição do Passo a Passo').click(); // Clicar para expandir
+        cy.get('.receita-card > p').should('be.visible'); // Verificar se a string está visível
     });
-
-    it('Impede que a quantidade no estoque fique negativa', () => {
-        // Acessar a página inicial e navegar até o estoque
-        cy.visit('/');
-        cy.get('[href="/estoque"]').click();
-
-        // Seleciona o primeiro material da lista e obtém a quantidade atual
-        cy.get(':nth-child(1) > .material-right > ul > :nth-child(1)').then(($el) => {
-            const textoQuantidade = $el.text(); // Exemplo: "Quantidade no estoque: 3"
-            const quantidadeAtual = parseInt(textoQuantidade.match(/\d+/)[0]); // Extrai o número
-
-            // Atualizar o estoque com um valor que faz o total ficar negativo
-            cy.get(':nth-child(1) > .material-right > .add-button').click();
-            const quantidadeNegativa = -(quantidadeAtual + 1); // Garante que o saldo final será negativo
-            cy.get('[type="number"]').type(quantidadeNegativa); // Insere o valor
-            cy.get('button').click(); // Tenta confirmar
-
-            // Verifica se a mensagem de erro é exibida
-            cy.contains('Erro: A quantidade no estoque não pode ser negativa.').should('be.visible');
-        });
-    });
+    
 
     after(() => {
         // Restaura o banco de dados original para garantir limpeza
