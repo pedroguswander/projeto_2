@@ -268,3 +268,6 @@ def registro_estoque_view(request, material_id):
     material = Material.objects.get(id = material_id)
     context = {'registros': registros, 'material': material}
     return render(request, 'estoque/estoque_registro.html', context)
+
+def niveis_view(request):
+    return render(request, 'niveis.html')

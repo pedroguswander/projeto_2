@@ -5,7 +5,8 @@ from django.conf import settings
 from .views import *
 
 urlpatterns = [
-    path('login', login_view, name='login'),
+    path('login/', login_view, name='login'),
+    path('niveis/', niveis_view, name='niveis'),
     path('cadastro/', cadastro_view, name='cadastro'),
     path('', home_view, name='home'),
     path('brinquedos/', brinquedos_view, name='brinquedos'),
