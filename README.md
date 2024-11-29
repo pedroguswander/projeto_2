@@ -12,7 +12,6 @@ O site planejado permite que a artesã acompanhe em tempo real os materiais disp
   - <a href="https://youtu.be/uBusY2mXmgk?feature=shared">Screencast - Prortótipo Lo-Fi</a>
 
   ## Status Report 2
-  - <a href="">Diagrama de atividades atualizado</a>
   - <a href="https://docs.google.com/document/d/1hbPkFaOfWY0Vu7cfOAuuuBQd6cPRaoAsXX0tzQoUSII/edit?usp=sharing">Programação em par atualizado</a>
   - <a href="https://docs.google.com/document/d/1_2K0o1LP1sweup26paLkoGUYxsEdehawgt9dbDO3Y80/edit?usp=sharing">Instruções de uso atualizado</a>
   - <a href="https://github.com/pedroguswander/projeto_2/blob/main/Bug%20Tracker%20-%20Aberto.png">Bug Tracker - Aberto</a>
