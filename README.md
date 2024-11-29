@@ -14,6 +14,8 @@ O site planejado permite que a artesã acompanhe em tempo real os materiais disp
   ## Status Report 2
   - <a href="">Diagrama de atividades atualizado</a>
   - <a href="">Instruções de uso atualizado</a>
+  - <a href="">Bug Tracker - Aberto</a>
+  - <a href="">Bug Tracker - Fechado</a>
   - <a href="">Screencast - Uso do sistema SR2</a>
   - <a href="">Screencast - Prortótipo Lo-Fi Média & Alta</a>
   - <a href="">Screencast - CI/CD SR2</a>
