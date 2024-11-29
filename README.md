@@ -13,11 +13,11 @@ O site planejado permite que a artesã acompanhe em tempo real os materiais disp
 
   ## Status Report 2
   - <a href="">Diagrama de atividades atualizado</a>
+  - <a href="https://docs.google.com/document/d/1hbPkFaOfWY0Vu7cfOAuuuBQd6cPRaoAsXX0tzQoUSII/edit?usp=sharing">Programação em par atualizado</a>
   - <a href="https://docs.google.com/document/d/1_2K0o1LP1sweup26paLkoGUYxsEdehawgt9dbDO3Y80/edit?usp=sharing">Instruções de uso atualizado</a>
   - <a href="https://github.com/pedroguswander/projeto_2/blob/main/Bug%20Tracker%20-%20Aberto.png">Bug Tracker - Aberto</a>
   - <a href="https://github.com/pedroguswander/projeto_2/blob/main/Bug%20Tracker%20-%20Fechado.png">Bug Tracker - Fechado</a>
   - <a href="">Screencast - Uso do sistema SR2</a>
-  - <a href="">Screencast - Prortótipo Lo-Fi Média & Alta</a>
   - <a href="https://youtu.be/bKgBUu7CYkQ">Screencast - Pipeline dos testes CI/CD SR2</a>
   - <a href="">Screencast - Testes E2E</a>
 
