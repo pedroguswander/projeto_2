@@ -1,4 +1,5 @@
-describe('Eu como usuário, gostaria de atualizar o nível de estoque dos meus materiais', () => {
+
+describe('Eu como usuário, gostaria de marcar pedidos como "em produção"', () => {
 
     const isWindows = Cypress.platform === 'win32'; // Detecta o sistema operacional
     const copyCommand = isWindows 
@@ -25,39 +26,65 @@ describe('Eu como usuário, gostaria de atualizar o nível de estoque dos meus m
             .then(result => cy.log('Execução do comando migrate:', result.stdout || result.stderr));
     });
 
-    it('Exibe mensagem de confirmação após atualizar estoque', () => {
-        // Acessar a página inicial e navegar até o estoque
-        cy.visit('/');
-        cy.get('[href="/estoque"]').click();
-
-        // Atualizar o estoque e verificar mensagem de confirmação
-        cy.get(':nth-child(1) > .material-right > .add-button').click();
-        cy.get('[type="number"]').type(5); // Adiciona 5 unidades
-        cy.get('button').click(); // Confirma
-        cy.contains('Estoque atualizado com sucesso!').should('be.visible'); // Verifica a mensagem
-    });
-
-    it('Impede que a quantidade no estoque fique negativa', () => {
-        // Acessar a página inicial e navegar até o estoque
-        cy.visit('/');
-        cy.get('[href="/estoque"]').click();
-
-        // Seleciona o primeiro material da lista e obtém a quantidade atual
-        cy.get(':nth-child(1) > .material-right > ul > :nth-child(1)').then(($el) => {
-            const textoQuantidade = $el.text(); // Exemplo: "Quantidade no estoque: 3"
-            const quantidadeAtual = parseInt(textoQuantidade.match(/\d+/)[0]); // Extrai o número
-
-            // Atualizar o estoque com um valor que faz o total ficar negativo
-            cy.get(':nth-child(1) > .material-right > .add-button').click();
-            const quantidadeNegativa = -(quantidadeAtual + 1); // Garante que o saldo final será negativo
-            cy.get('[type="number"]').type(quantidadeNegativa); // Insere o valor
-            cy.get('button').click(); // Tenta confirmar
-
-            // Verifica se a mensagem de erro é exibida
-            cy.contains('Erro: A quantidade no estoque não pode ser negativa.').should('be.visible');
+    it('Exibe mensagem de aviso quando não é possível produzir o pedido requisitado', () => {
+            // Acessar a página inicial
+            cy.visit('/');
+            cy.get('[href="/pedidos"]').click()
+        
+            // Procurar pelo pedido com o nome "PEDIDO-02" e clicar no card de detalhes da entrega
+            cy.get(':nth-child(3) > .pedido-item-center > :nth-child(2) > .button-class').click()
+        
+            // Verificar se a mensagem "Não é possível produzir o pedido." está visível
+            cy.contains('Não é possível produzir o pedido.').should('be.visible');
         });
+
+    it('Se for possível produzir o produto requisitado no pedido, ao clicar no botão de “Iniciar produção”, o status do pedido deve ser modificado para “em andamento”', () => {
+            // Acessar a página inicial
+            cy.visit('/');
+            cy.get('[href="/pedidos"]').click();
+        
+            // Clicar no último botão de detalhes da entrega
+            cy.get('.pedido-item:last-child .button-class').click();
+        
+            // Verificar se está na página do pedido e o botão "Iniciar produção" está visível
+            cy.contains('Iniciar produção').should('be.visible');
+        
+            // Clicar no botão "Iniciar produção"
+            cy.contains('Iniciar produção').click();
+        
+            // Verificar se o status foi atualizado para "em andamento"
+            cy.contains('Status: em andamento').should('be.visible');
     });
 
+    it('Ao clicar em cancelar um pedido que está marcado como “em andamento”,  o status do pedido deve mudar para “pendente”', () => {
+        // Acessar a página inicial
+        cy.visit('/');
+        cy.get('[href="/pedidos"]').click();
+    
+        // Clicar no último botão de detalhes da entrega
+        cy.get(':nth-child(2) > .pedido-item-center > :nth-child(2) > .button-class').click();
+        cy.get('#button-cancel').click()
+        cy.get(':nth-child(2) > .pedido-item-left > p').invoke('text').should('have.string', 'pendente')
+    
+});
+
+it('Ao clicar em concluir um pedido que está marcado como “em andamento”,  o status do pedido deve mudar para “concluído”', () => {
+    // Acessar a página inicial
+    cy.visit('/');
+    cy.get('[href="/pedidos"]').click();
+
+    // Clicar no último botão de detalhes da entrega
+    cy.get(':nth-child(2) > .pedido-item-center > :nth-child(2) > .button-class').click();
+    cy.get(':nth-child(1) > .btn').click()
+    cy.get(':nth-child(2) > .pedido-item-left > p').invoke('text').should('have.string', 'concluido')
+
+});
+        
+
+    afterEach(() => {
+        cy.exec(copyCommand, { failOnNonZeroExit: false });
+    })
+        
     after(() => {
         // Restaura o banco de dados original para garantir limpeza
         cy.exec(copyCommand, { failOnNonZeroExit: false })
