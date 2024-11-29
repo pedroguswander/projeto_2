@@ -22,7 +22,7 @@ O site planejado permite que a artesã acompanhe em tempo real os materiais disp
   - <a href="https://github.com/pedroguswander/projeto_2/blob/main/Bug%20Tracker%20-%20Fechado.png">Bug Tracker - Fechado</a>
   - <a href="https://youtu.be/n4D3p_RBOII">Screencast - Uso do sistema SR2</a>
   - <a href="https://youtu.be/bKgBUu7CYkQ">Screencast - Pipeline dos testes CI/CD SR2</a>
-  - <a href="">Screencast - Testes E2E</a>
+  - <a href="https://youtu.be/y0isWfQsxF0">Screencast - Testes E2E</a>
 
 
 
