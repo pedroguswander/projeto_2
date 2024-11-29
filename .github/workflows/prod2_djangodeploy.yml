@@ -33,7 +33,7 @@ jobs:
           pip install -r requirements.txt
           npm install cypress --save -include=dev
           npm ci
-          cd..
+          cd ..
 
       - name: Run local server
         run: |
@@ -42,7 +42,7 @@ jobs:
           python manage.py runserver &
           sleep 5
           npx cypress run
-          cd..
+          cd ..
 
       - name: Cleaning testing files
         run: |
