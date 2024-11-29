@@ -3,6 +3,10 @@ O INSTOKY é uma solução digital que integra o gerenciamento de estoque, a pro
 
 O site planejado permite que a artesã acompanhe em tempo real os materiais disponíveis no estoque, identifique quais produtos podem ser fabricados com base nesses materiais e gerencie os pedidos de clientes de maneira eficiente. Ao automatizar e centralizar essas operações, a plataforma otimiza o fluxo de trabalho, reduz erros manuais e melhora a capacidade de atendimento, proporcionando mais organização e agilidade no negócio artesanal.
 
+  ## Links importantes
+  - <a href="https://djangodeploy-d5cub5dmdwgxa4e9.brazilsouth-01.azurewebsites.net">Site</a>
+  - <a href="https://trello.com/invite/b/673a7e526457c46c0c9fbe9f/ATTIde7e4798bb0fc2b4e51dbd8c96c72034910BDE6B/projeto-2-grupo-17">Trello - histórias</a>
+
 ## Status Report 1
   - <a href="https://github.com/pedroguswander/projeto_2/blob/3865d9f579056284682641b6a34467a5467648cb/UML_G17.jpg">Diagrama de atividades</a>
   - <a href="https://docs.google.com/document/d/1_2K0o1LP1sweup26paLkoGUYxsEdehawgt9dbDO3Y80/edit?usp=sharing">Instruções de uso</a>
@@ -20,8 +24,6 @@ O site planejado permite que a artesã acompanhe em tempo real os materiais disp
   - <a href="https://youtu.be/bKgBUu7CYkQ">Screencast - Pipeline dos testes CI/CD SR2</a>
   - <a href="">Screencast - Testes E2E</a>
 
-  ## Links importantes
-  - <a href="https://djangodeploy-d5cub5dmdwgxa4e9.brazilsouth-01.azurewebsites.net">Site</a>
-  - <a href="">Trello - histórias</a>
+
 
   ## Equipe CC
